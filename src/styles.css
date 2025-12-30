@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+/* FlowBite */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import 'flowbite/src/themes/default';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+.custom-container {
+  @apply w-full md:w-[90%] md:mx-auto;
+}

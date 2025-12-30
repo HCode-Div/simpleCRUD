@@ -1,0 +1,184 @@
+<nav class="py-3 border-b-2 border-gray-300">
+  <div class="custom-container flex justify-between items-center">
+    <h1 class="font-semibold text-xl">Products Dashboard</h1>
+    <button
+      class="flex items-center gap-3 p-2 border border-gray-300 rounded cursor-pointer transition-all hover:bg-gray-50 active:bg-gray-100"
+    >
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Add New Proudct Section -->
+<section class="custom-container mt-10 p-6 border border-gray-300 rounded-lg">
+  <h2 class="font-bold text-2xl">
+    <i class="fa-solid fa-plus"></i>
+    Add New Product
+  </h2>
+  <!-- Add new proudct Form -->
+  <form [formGroup]="addForm" class="mt-5 p-3 grid grid-cols-12 gap-4">
+    <!-- Proudct Name Input -->
+    <div class="col-span-12 lg:col-span-5">
+      <label for="proudctName" class="block mb-2.5 text-sm font-medium text-heading"
+        >Proudct Name</label
+      >
+      <input
+        formControlName="itemName"
+        type="text"
+        id="proudctName"
+        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+        placeholder="Samsung Mobile"
+        required
+      />
+    </div>
+    <!-- Price Input -->
+    <div class="col-span-6 lg:col-span-2">
+      <label for="productPrice" class="block mb-2.5 text-sm font-medium text-heading text-nowrap"
+        >product Price:</label
+      >
+      <input
+        formControlName="itemPrice"
+        type="number"
+        id="productPrice"
+        aria-describedby="helper-text-explanation"
+        class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+        placeholder="0.00"
+        required
+      />
+    </div>
+    <!-- Quantaitiy Input -->
+    <div class="col-span-6 lg:col-span-2">
+      <label for="proudctQuantity" class="block mb-2.5 text-sm font-medium text-heading text-nowrap"
+        >proudct Quantity:</label
+      >
+      <input
+        formControlName="itemQuantity"
+        type="number"
+        id="proudctQuantity"
+        aria-describedby="helper-text-explanation"
+        class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+        placeholder="0"
+        required
+      />
+    </div>
+
+    <!-- Add Btn -->
+    <div class="col-span-12 lg:col-span-2 flex justify-center items-end">
+      <button
+        (click)="addNewItem()"
+        type="button"
+        class="w-full text-white bg-brand box-border border border-transparent cursor-pointer transition-all hover:bg-brand-light active:bg-brand-strong focus:ring-4 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+      >
+        Add Proudct
+      </button>
+    </div>
+  </form>
+  @if (alert) {
+  <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+    <span class="font-medium">alert!</span> Please Check All Fields
+  </div>
+  }
+</section>
+
+<!-- Proudcts Section -->
+
+<section class="custom-container mt-10 p-6 border border-gray-300 rounded-lg">
+  <h2 class="font-bold text-2xl mb-7">Products ({{ items.length }})</h2>
+
+  <div
+    class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default"
+  >
+    <table class="w-full text-sm text-left text-body">
+      <thead
+        class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3 font-medium">Product name</th>
+          <th scope="col" class="px-6 py-3 font-medium">Price</th>
+          <th scope="col" class="px-6 py-3 font-medium">Stock</th>
+          <th scope="col" class="px-6 py-3 font-medium">Status</th>
+          <th scope="col" class="px-6 py-3 font-medium">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ======== -->
+        @for (item of items; track $index) {
+        <tr class="bg-neutral-primary transition-all hover:bg-neutral-100 border-b border-default">
+          <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+            {{ item.itemName }}
+          </th>
+          <td class="px-6 py-4">${{ item.itemPrice }}</td>
+          <td class="px-6 py-4">{{ item.itemQuantity }}</td>
+          <td class="px-6 py-4">
+            @if (!item.itemStatus) {
+            <p
+              class="w-fit p-1 text-[12px] text-nowrap lg:text-wrap lg:text-sm bg-green-500 text-white rounded"
+            >
+              In Stoke
+            </p>
+            }@else {
+            <p
+              class="w-fit p-1 text-[12px] text-nowrap lg:text-wrap lg:text-sm bg-red-500 text-white rounded"
+            >
+              Out Stoke
+            </p>
+            }
+          </td>
+          <td class="">
+            <div class="flex gap-2">
+              <button
+                (click)="showDeleteAlert(item.itemName, $index)"
+                type="button"
+                class="text-white bg-red-500 box-border border border-transparent cursor-pointer transition-all hover:bg-red-600 active:bg-red-700 shadow-xs font-medium leading-5 rounded-base text-sm px-3 py-1.5"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+
+              <button
+                type="button"
+                class="text-white bg-brand box-border border border-transparent cursor-pointer transition-all hover:bg-brand-light active:bg-brand-strong shadow-xs font-medium leading-5 rounded-base text-sm px-3 py-1.5"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+        <!-- ======== -->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Delete Alert  -->
+@if (deleteAlert) {
+<div
+  class="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.5)] flex justify-center items-center"
+>
+  <div
+    class="min-w-100 min-h-50 rounded bg-white text-center flex flex-col justify-center items-center"
+  >
+    <p class="text-lg font-bold">Are You sure to delete {{ deletedName }} ?</p>
+
+    <div class="flex gap-3 mt-3">
+      <button
+        (click)="deleteItem()"
+        type="button"
+        class="text-white cursor-pointer bg-green-500 box-border border border-transparent hover:bg-green-600 active:bg-green-700 shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+      >
+        Yes
+      </button>
+
+      <button
+        (click)="closeDeleteAlert()"
+        type="button"
+        class="text-white cursor-pointer bg-red-500 box-border border border-transparent hover:bg-red-600 active:bg-green-700 shadow-xs font-medium leading-5 rounded-full text-sm px-4 py-2.5 focus:outline-none"
+      >
+        No
+      </button>
+    </div>
+  </div>
+</div>
+
+}
